@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState, useEffect, useRef } from "react";
 import { motion, useAnimation, useInView } from "framer-motion";
 import { RoughNotation, RoughNotationGroup } from "react-rough-notation";
@@ -22,6 +20,25 @@ const Navbar = () => {
   const toggleMenu = () => setIsOpen(!isOpen);
   const menuItems = ["Services", "About Us", "Testimonials", "Contact"];
 
+  const scrollToSection = (sectionId: any) => {
+    const section = document.getElementById(sectionId);
+    const navbar = document.querySelector("header");
+    const navbarHeight = navbar!.offsetHeight;
+
+    if (section) {
+      const sectionTop =
+        section.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
+      window.scrollTo({
+        top: sectionTop,
+        behavior: "smooth",
+      });
+    }
+
+    if (isOpen) {
+      toggleMenu();
+    }
+  };
+
   return (
     <header className="bg-white py-4 border-b border-gray-200 sticky top-0 z-50 shadow-lg">
       <nav className="container mx-auto px-4">
@@ -30,12 +47,14 @@ const Navbar = () => {
           <ul className="hidden md:flex space-x-6">
             {menuItems.map((item) => (
               <li key={item}>
-                <a
-                  href={`#${item.toLowerCase().replace(" ", "-")}`}
+                <button
+                  onClick={() =>
+                    scrollToSection(item.toLowerCase().replace(" ", "-"))
+                  }
                   className="text-gray-600 hover:text-blue-600 transition-colors"
                 >
                   {item}
-                </a>
+                </button>
               </li>
             ))}
           </ul>
@@ -57,13 +76,14 @@ const Navbar = () => {
             <ul className="flex flex-col space-y-4">
               {menuItems.map((item) => (
                 <li key={item}>
-                  <a
-                    href={`#${item.toLowerCase().replace(" ", "-")}`}
-                    className="text-gray-600 hover:text-blue-600 transition-colors block py-2"
-                    onClick={toggleMenu}
+                  <button
+                    onClick={() =>
+                      scrollToSection(item.toLowerCase().replace(" ", "-"))
+                    }
+                    className="text-gray-600 hover:text-blue-600 transition-colors block py-2 w-full text-left"
                   >
                     {item}
-                  </a>
+                  </button>
                 </li>
               ))}
             </ul>

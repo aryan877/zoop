@@ -1,113 +1,316 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
+import { TypewriterEffectSmooth } from "@/components/ui/typewriter-effect";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import {
+  IconClipboard,
+  IconMail,
+  IconPhone,
+  IconWorld,
+  IconArrowRight,
+} from "@tabler/icons-react";
+
+const ZoopAnalysisHomepage = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  const handleInputChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    console.log("Form submitted:", formData);
+    setFormData({ name: "", email: "", message: "" });
+  };
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
+    <div className="min-h-screen bg-white text-gray-800">
+      <header className="bg-yellow-400 py-4 sticky top-0 z-50">
+        <nav className="container mx-auto px-4 flex justify-between items-center">
+          <h1 className="text-2xl font-bold text-gray-800">
+            Zoop Analysis Solutions
+          </h1>
+          <ul className="flex space-x-6">
+            <li>
+              <a
+                href="#services"
+                className="hover:text-gray-600 transition-colors"
+              >
+                Services
+              </a>
+            </li>
+            <li>
+              <a
+                href="#about"
+                className="hover:text-gray-600 transition-colors"
+              >
+                About Us
+              </a>
+            </li>
+            <li>
+              <a
+                href="#contact"
+                className="hover:text-gray-600 transition-colors"
+              >
+                Contact
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </header>
+
+      <main>
+        <section className="bg-yellow-50 py-20 text-center">
+          <div className="container mx-auto px-4">
+            <TypewriterEffectSmooth
+              words={[
+                { text: "Elevate" },
+                { text: "Your" },
+                { text: "Research" },
+                { text: "with" },
+                { text: "Zoop" },
+                { text: "Analysis" },
+                { text: "Solutions" },
+              ]}
+              className="text-5xl font-bold mb-6 text-yellow-600"
             />
-          </a>
-        </div>
-      </div>
+            <TextGenerateEffect
+              words="Your trusted partner in research data analysis and publication for medical, dental, and nursing scholars."
+              className="text-xl text-gray-600 max-w-2xl mx-auto"
+            />
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+            >
+              <Button className="mt-8 bg-yellow-500 hover:bg-yellow-600 text-gray-800 font-bold py-3 px-6 rounded-full text-lg">
+                Get Started Now
+                <IconArrowRight className="ml-2" />
+              </Button>
+            </motion.div>
+          </div>
+        </section>
 
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+        <section id="services" className="py-20">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold mb-12 text-center text-yellow-600">
+              Our Comprehensive Services
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+              {[
+                {
+                  title: "Expert Consultation",
+                  description:
+                    "Personalized consultations tailored to your specific field and research objectives.",
+                },
+                {
+                  title: "Statistical Mastery",
+                  description:
+                    "Advanced statistical techniques to derive meaningful insights from your data.",
+                },
+                {
+                  title: "Publication Support",
+                  description:
+                    "Guidance through the publication process in reputable indexed journals.",
+                },
+                {
+                  title: "Data Analysis",
+                  description:
+                    "Comprehensive data analysis using cutting-edge methodologies and tools.",
+                },
+              ].map((service, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow"
+                >
+                  <IconClipboard className="h-12 w-12 text-yellow-500 mb-4" />
+                  <h3 className="text-xl font-semibold mb-2 text-yellow-600">
+                    {service.title}
+                  </h3>
+                  <p className="text-gray-600">{service.description}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
 
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+        <section id="about" className="bg-yellow-50 py-20">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold mb-12 text-center text-yellow-600">
+              Why Choose Zoop Analysis Solutions?
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+              {[
+                {
+                  title: "Expert Team",
+                  description:
+                    "Our seasoned data analysts and statisticians specialize in medical, dental, and nursing research, providing unparalleled expertise.",
+                },
+                {
+                  title: "Comprehensive Coverage",
+                  description:
+                    "We support MBBS, BDS, MD, MS, MDS, DM, MCh, and PhD research and dissertations, covering the full spectrum of medical academia.",
+                },
+                {
+                  title: "Publication Excellence",
+                  description:
+                    "We facilitate publication in SCOPUS, EMBASE, and PubMed indexed journals, adhering to the latest NMC guidelines.",
+                },
+                {
+                  title: "Global Accessibility",
+                  description:
+                    "Our virtual consultation services break geographical barriers, making expert support accessible worldwide.",
+                },
+              ].map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="bg-white p-6 rounded-lg shadow-lg"
+                >
+                  <h3 className="text-xl font-semibold mb-2 text-yellow-600">
+                    {item.title}
+                  </h3>
+                  <p className="text-gray-600">{item.description}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+        <section id="testimonials" className="py-20">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold mb-12 text-center text-yellow-600">
+              What Our Clients Say
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[
+                {
+                  name: "Dr. Sarah Johnson",
+                  role: "Cardiologist",
+                  quote:
+                    "Zoop Analysis Solutions transformed my research data into publishable insights. Their expertise is unmatched!",
+                },
+                {
+                  name: "Dr. Michael Chen",
+                  role: "Dental Researcher",
+                  quote:
+                    "The statistical analysis provided by Zoop was crucial for my publication in a top-tier journal. Highly recommended!",
+                },
+                {
+                  name: "Prof. Emily Brown",
+                  role: "Nursing Science",
+                  quote:
+                    "Working with Zoop Analysis Solutions made the daunting task of data analysis a breeze. Their support was invaluable.",
+                },
+              ].map((testimonial, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="bg-yellow-50 p-6 rounded-lg shadow text-center"
+                >
+                  <p className="text-gray-600 italic mb-4">
+                    {testimonial.quote}
+                  </p>
+                  <p className="font-semibold text-yellow-600">
+                    {testimonial.name}
+                  </p>
+                  <p className="text-sm text-gray-500">{testimonial.role}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
+        <section id="contact" className="bg-yellow-50 py-20">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold mb-12 text-center text-yellow-600">
+              Get in Touch
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+              <motion.form
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                onSubmit={handleSubmit}
+                className="space-y-6"
+              >
+                <Input
+                  type="text"
+                  name="name"
+                  placeholder="Your Name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full p-3 border border-yellow-300 rounded"
+                />
+                <Input
+                  type="email"
+                  name="email"
+                  placeholder="Your Email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full p-3 border border-yellow-300 rounded"
+                />
+                <Textarea
+                  name="message"
+                  placeholder="Your Message"
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full p-3 border border-yellow-300 rounded"
+                  rows={4}
+                />
+                <Button className="w-full bg-yellow-500 hover:bg-yellow-600 text-gray-800 font-bold py-3 px-6 rounded">
+                  Send Message
+                </Button>
+              </motion.form>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="space-y-6"
+              >
+                <div className="flex items-center space-x-4 text-gray-700">
+                  <IconMail className="h-6 w-6 text-yellow-500" />
+                  <span>zoopanalysis@gmail.com</span>
+                </div>
+                <div className="flex items-center space-x-4 text-gray-700">
+                  <IconPhone className="h-6 w-6 text-yellow-500" />
+                  <span>+91-8778074704</span>
+                </div>
+                <div className="flex items-center space-x-4 text-gray-700">
+                  <IconWorld className="h-6 w-6 text-yellow-500" />
+                  <span>www.zoopanalysis.com</span>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+      </main>
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+      <footer className="bg-yellow-400 py-8 text-center text-gray-800">
+        <p>&copy; 2024 Zoop Analysis Solutions. All rights reserved.</p>
+      </footer>
+    </div>
   );
-}
+};
+
+export default ZoopAnalysisHomepage;

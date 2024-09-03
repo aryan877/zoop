@@ -38,15 +38,14 @@ export const WobbleCard = ({
         transition: "transform 0.1s ease-out",
       }}
       className={cn(
-        "mx-auto w-full bg-gradient-to-br from-blue-100 to-indigo-100 relative rounded-lg overflow-hidden",
+        "mx-auto w-full bg-white relative overflow-hidden",
         containerClassName
       )}
     >
       <div
-        className="relative h-full sm:mx-0 sm:rounded-lg overflow-hidden"
+        className="relative h-full sm:mx-0 overflow-hidden"
         style={{
-          boxShadow:
-            "0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08)",
+          boxShadow: "0 10px 30px rgba(0, 0, 0, 0.1)",
         }}
       >
         <motion.div
@@ -56,7 +55,7 @@ export const WobbleCard = ({
               : "translate3d(0px, 0px, 0) scale3d(1, 1, 1)",
             transition: "transform 0.1s ease-out",
           }}
-          className={cn("h-full px-4 py-6 sm:px-6", className)}
+          className={cn("h-full", className)}
         >
           {children}
         </motion.div>

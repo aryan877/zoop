@@ -16,13 +16,14 @@ import {
   FiMenu,
   FiX,
 } from "react-icons/fi";
+import { WobbleCard } from "@/components/ui/wobble-card";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const toggleMenu = () => setIsOpen(!isOpen);
   const menuItems = ["Services", "About Us", "Testimonials", "Contact"];
 
-  const scrollToSection = (sectionId: any) => {
+  const scrollToSection = (sectionId: string) => {
     const section = document.getElementById(sectionId);
     const navbar = document.querySelector("header");
     const navbarHeight = navbar!.offsetHeight;
@@ -96,7 +97,17 @@ const Navbar = () => {
   );
 };
 
-const ColorChangeCard = ({ icon: Icon, title, description, image }: any) => {
+const ColorChangeCard = ({
+  icon: Icon,
+  title,
+  description,
+  image,
+}: {
+  icon: React.ElementType;
+  title: string;
+  description: string;
+  image: string;
+}) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -137,7 +148,15 @@ const ColorChangeCard = ({ icon: Icon, title, description, image }: any) => {
   );
 };
 
-const FeatureCard = ({ icon: Icon, title, description }: any) => (
+const FeatureCard = ({
+  icon: Icon,
+  title,
+  description,
+}: {
+  icon: React.ElementType;
+  title: string;
+  description: string;
+}) => (
   <motion.div
     className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg"
     whileHover={{ scale: 1.05, rotate: 1 }}
@@ -254,7 +273,7 @@ const ZoopAnalysisHomepage = () => {
         </section>
 
         {/* Why Choose Us Section */}
-        <section id="about-us" className="bg-gray-100 dark:bg-gray-900 py-20">
+        <section id="about-us" className="py-20">
           <div className="container mx-auto px-4">
             <motion.h2
               className="text-3xl font-bold mb-12 text-center"
@@ -264,27 +283,47 @@ const ZoopAnalysisHomepage = () => {
             >
               Why Choose Zoop Analysis Solutions?
             </motion.h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <FeatureCard
-                icon={FiCheckCircle}
-                title="Expert Team"
-                description="Our seasoned data analysts and statisticians specialize in medical, dental, and nursing research, providing unparalleled expertise."
-              />
-              <FeatureCard
-                icon={FiGlobe}
-                title="Comprehensive Coverage"
-                description="We support MBBS, BDS, MD, MS, MDS, DM, MCh, and PhD research, covering the full spectrum of medical academia."
-              />
-              <FeatureCard
-                icon={FiAward}
-                title="Publication Excellence"
-                description="We facilitate publication in SCOPUS, EMBASE, and PubMed indexed journals, adhering to the latest NMC guidelines."
-              />
-              <FeatureCard
-                icon={FiBarChart2}
-                title="Cutting-edge Analysis"
-                description="Utilize advanced statistical methods and data visualization techniques to enhance your research impact."
-              />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 max-w-7xl mx-auto w-full">
+              {[
+                {
+                  icon: FiCheckCircle,
+                  title: "Expert Team",
+                  description:
+                    "Our seasoned data analysts and statisticians specialize in medical, dental, and nursing research, providing unparalleled expertise.",
+                },
+                {
+                  icon: FiGlobe,
+                  title: "Comprehensive Coverage",
+                  description:
+                    "We support MBBS, BDS, MD, MS, MDS, DM, MCh, and PhD research, covering the full spectrum of medical academia.",
+                },
+                {
+                  icon: FiAward,
+                  title: "Publication Excellence",
+                  description:
+                    "We facilitate publication in SCOPUS, EMBASE, and PubMed indexed journals, adhering to the latest NMC guidelines.",
+                },
+                {
+                  icon: FiBarChart2,
+                  title: "Cutting-edge Analysis",
+                  description:
+                    "Utilize advanced statistical methods and data visualization techniques to enhance your research impact.",
+                },
+              ].map((feature, index) => (
+                <WobbleCard
+                  key={index}
+                  containerClassName="col-span-1 min-h-[300px]"
+                  className="flex items-center justify-center"
+                >
+                  <div className="flex flex-col items-center text-center p-6">
+                    <feature.icon className="text-4xl mb-4 text-blue-600" />
+                    <h3 className="text-xl font-semibold mb-2 text-gray-800">
+                      {feature.title}
+                    </h3>
+                    <p className="text-gray-600">{feature.description}</p>
+                  </div>
+                </WobbleCard>
+              ))}
             </div>
           </div>
         </section>

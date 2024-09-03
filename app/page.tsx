@@ -5,12 +5,10 @@ import { motion, useAnimation, useInView } from "framer-motion";
 import { RoughNotation, RoughNotationGroup } from "react-rough-notation";
 import {
   FiBarChart2,
-  FiFileText,
   FiAward,
   FiGlobe,
   FiMail,
   FiPhone,
-  FiMapPin,
   FiClock,
   FiCheckCircle,
   FiMenu,
@@ -19,8 +17,11 @@ import {
   FiTwitter,
   FiFacebook,
   FiInstagram,
+  FiMessageSquare,
 } from "react-icons/fi";
 import { WobbleCard } from "@/components/ui/wobble-card";
+import WhatsAppIcon from "@/components/ui/WhatsappIcon";
+import { FaArrowRight } from "react-icons/fa";
 
 const scrollToSection = (sectionId: any) => {
   const section = document.getElementById(sectionId);
@@ -40,9 +41,16 @@ const scrollToSection = (sectionId: any) => {
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const toggleMenu = () => setIsOpen(!isOpen);
-  const menuItems = ["Services", "About Us", "Testimonials", "Contact"];
+  const menuItems = [
+    { name: "Home", id: "hero" },
+    { name: "Services", id: "services" },
+    { name: "About Us", id: "about-us" },
+    { name: "How It Works", id: "how-it-works" },
+    { name: "Testimonials", id: "testimonials" },
+    { name: "Contact Us", id: "contact" },
+  ];
 
-  const handleNavClick = (sectionId: any) => {
+  const handleNavClick = (sectionId: string) => {
     scrollToSection(sectionId);
     if (isOpen) {
       toggleMenu();
@@ -50,56 +58,82 @@ const Navbar = () => {
   };
 
   return (
-    <header className="bg-white py-4 border-b border-gray-200 sticky top-0 z-50 shadow-lg">
-      <nav className="container mx-auto px-4">
-        <div className="flex justify-between items-center">
+    <header className="bg-gray-800 py-2 sticky top-0 z-50">
+      <div className="container mx-auto px-4">
+        {/* Top bar */}
+        <div className="flex justify-between items-center py-2 text-gray-300 text-sm">
+          <div className="flex items-center">
+            <FiPhone className="mr-2" />
+            <span>WhatsApp +91 8778074704</span>
+          </div>
+          <button className="flex items-center bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700 transition-colors">
+            <FiMessageSquare className="mr-2" />
+            Get Instant Quote on WhatsApp!
+          </button>
+        </div>
+
+        {/* Main navbar */}
+        <nav className="flex justify-between items-center py-4">
           <img src="/logo.png" alt="Zoop Analysis Solutions" className="h-16" />
-          <ul className="hidden md:flex space-x-6">
+          <ul className="hidden lg:flex space-x-6">
             {menuItems.map((item) => (
-              <li key={item}>
+              <li key={item.name}>
                 <button
-                  onClick={() =>
-                    handleNavClick(item.toLowerCase().replace(" ", "-"))
-                  }
-                  className="text-gray-600 hover:text-blue-600 transition-colors"
+                  onClick={() => handleNavClick(item.id)}
+                  className="text-gray-300 hover:text-blue-400 transition-colors"
                 >
-                  {item}
+                  {item.name}
                 </button>
               </li>
             ))}
           </ul>
           <button
-            className="md:hidden text-gray-600 focus:outline-none"
+            className="hidden lg:flex items-center space-x-2 bg-yellow-400 text-gray-800 px-6 py-2 rounded font-semibold hover:bg-yellow-500 transition-colors"
+            onClick={() => handleNavClick("contact")}
+          >
+            <span>GET A FREE QUOTE</span>
+            <FaArrowRight className="inline-block ml-1" />
+          </button>
+          <button
+            className="lg:hidden text-gray-300 focus:outline-none"
             onClick={toggleMenu}
           >
             {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
           </button>
-        </div>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden mt-4"
-          >
-            <ul className="flex flex-col space-y-4">
-              {menuItems.map((item) => (
-                <li key={item}>
-                  <button
-                    onClick={() =>
-                      handleNavClick(item.toLowerCase().replace(" ", "-"))
-                    }
-                    className="text-gray-600 hover:text-blue-600 transition-colors block py-2 w-full text-left"
-                  >
-                    {item}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-        )}
-      </nav>
+        </nav>
+      </div>
+
+      {/* Mobile menu */}
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3 }}
+          className="lg:hidden bg-gray-800"
+        >
+          <ul className="flex flex-col space-y-4 p-4">
+            {menuItems.map((item) => (
+              <li key={item.name}>
+                <button
+                  onClick={() => handleNavClick(item.id)}
+                  className="text-gray-300 hover:text-blue-400 transition-colors block py-2 w-full text-left"
+                >
+                  {item.name}
+                </button>
+              </li>
+            ))}
+            <li>
+              <button
+                className="bg-yellow-400 text-gray-800 px-6 py-2 rounded font-semibold hover:bg-yellow-500 transition-colors w-full text-center"
+                onClick={() => handleNavClick("contact")}
+              >
+                GET A FREE QUOTE
+              </button>
+            </li>
+          </ul>
+        </motion.div>
+      )}
     </header>
   );
 };
@@ -197,21 +231,22 @@ const ZoopAnalysisHomepage = () => {
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800">
       <Navbar />
+      <WhatsAppIcon phoneNumber="+919095316465" />
 
       <main>
         {/* Hero Section */}
         <section ref={heroRef} className="py-40 relative">
           <img
-            src="/hero.jpg"
+            src="/hero.png"
             alt="Medical Research"
             className="absolute inset-0 w-full h-full object-cover opacity-50"
           />
-          <div className="absolute inset-0 bg-black opacity-40"></div>
+          <div className="absolute inset-0 bg-white opacity-30"></div>
           <div className="container mx-auto px-4 flex items-center relative z-10">
             <div className="w-full md:w-2/3 lg:w-1/2 pr-12">
               <RoughNotationGroup show={isHeroInView}>
                 <motion.h1
-                  className="text-5xl font-bold text-white mb-6"
+                  className="text-5xl font-bold text-gray-800 mb-6"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5 }}
@@ -226,7 +261,7 @@ const ZoopAnalysisHomepage = () => {
                   </RoughNotation>
                 </motion.h1>
                 <motion.p
-                  className="text-xl text-gray-200 mb-8"
+                  className="text-2xl text-gray-600 mb-8"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
@@ -237,12 +272,13 @@ const ZoopAnalysisHomepage = () => {
                   excellence.
                 </motion.p>
                 <motion.button
-                  className="bg-blue-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition-colors"
+                  className="bg-blue-600 text-white px-8 py-3 rounded text-lg font-semibold hover:bg-blue-700 transition-colors flex items-center space-x-2"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => scrollToSection("contact")}
                 >
-                  Unlock Your Research Potential
+                  <span>Unlock Your Research Potential</span>
+                  <FaArrowRight className="inline-block ml-2" />
                 </motion.button>
               </RoughNotationGroup>
             </div>
@@ -356,6 +392,68 @@ const ZoopAnalysisHomepage = () => {
           </div>
         </section>
 
+        {/* How It Works Section */}
+        <section id="how-it-works" className="py-20 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <h2 className="text-4xl font-bold mb-12 text-center text-gray-800">
+              How Zoop Analysis Works
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[
+                {
+                  title: "1. Submit a Statistics Task",
+                  description:
+                    "Begin by submitting your statistics task through our user-friendly order form. Provide detailed instructions, requirements, and the deadline for your medical research project.",
+                  image: "/placeholder/1.png",
+                },
+                {
+                  title: "2. Pay Securely",
+                  description:
+                    "Review the quote for your project and proceed with the payment. We ensure safe transactions through secure payment methods, tailored for researchers in India.",
+                  image: "/placeholder/2.png",
+                },
+                {
+                  title: "3. Get the Solutions",
+                  description:
+                    "Our expert team analyzes your data and prepares a comprehensive report. You'll receive high-quality, plagiarism-free results within the agreed deadline, ready for publication.",
+                  image: "/placeholder/3.png",
+                },
+              ].map((step, index) => (
+                <div
+                  key={index}
+                  className="bg-white overflow-hidden flex flex-col"
+                >
+                  <div className="w-full p-4 bg-gray-100">
+                    <img
+                      src={step.image}
+                      alt={step.title}
+                      className="w-full h-auto object-contain max-h-48"
+                    />
+                  </div>
+                  <div className="p-6 flex-grow flex flex-col">
+                    <h3 className="text-xl font-semibold mb-2 text-gray-800">
+                      {step.title}
+                    </h3>
+                    <p className="text-gray-600 flex-grow">
+                      {step.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="mt-12 text-center">
+              <motion.button
+                className="bg-blue-600 text-white px-8 py-3 rounded text-lg font-semibold hover:bg-blue-700 transition-colors"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => scrollToSection("contact")}
+              >
+                Start Your Analysis Project
+              </motion.button>
+            </div>
+          </div>
+        </section>
+
         {/* Testimonials Section */}
         <section
           id="testimonials"
@@ -388,7 +486,7 @@ const ZoopAnalysisHomepage = () => {
               ].map((testimonial, index) => (
                 <motion.div
                   key={index}
-                  className="bg-white p-6 shadow-lg"
+                  className="bg-white p-6"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.2 }}
@@ -475,7 +573,7 @@ const ZoopAnalysisHomepage = () => {
                   </div>
                   <button
                     type="submit"
-                    className="bg-blue-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition-colors"
+                    className="bg-blue-600 text-white px-8 py-3 rounded text-lg font-semibold hover:bg-blue-700 transition-colors"
                   >
                     Get Expert Advice
                   </button>
@@ -486,6 +584,7 @@ const ZoopAnalysisHomepage = () => {
         </section>
       </main>
       {/* Footer */}
+
       <footer className="bg-gray-800 py-12">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -523,6 +622,14 @@ const ZoopAnalysisHomepage = () => {
                 </li>
                 <li className="mb-2">
                   <button
+                    onClick={() => scrollToSection("how-it-works")}
+                    className="hover:text-blue-400 transition-colors"
+                  >
+                    How It Works
+                  </button>
+                </li>
+                <li className="mb-2">
+                  <button
                     onClick={() => scrollToSection("testimonials")}
                     className="hover:text-blue-400 transition-colors"
                   >
@@ -534,7 +641,7 @@ const ZoopAnalysisHomepage = () => {
                     onClick={() => scrollToSection("contact")}
                     className="hover:text-blue-400 transition-colors"
                   >
-                    Start Your Journey
+                    Contact Us
                   </button>
                 </li>
               </ul>

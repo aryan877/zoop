@@ -22,25 +22,28 @@ import {
 } from "react-icons/fi";
 import { WobbleCard } from "@/components/ui/wobble-card";
 
+const scrollToSection = (sectionId: any) => {
+  const section = document.getElementById(sectionId);
+  const navbar = document.querySelector("header");
+  const navbarHeight = navbar ? navbar.offsetHeight : 0;
+
+  if (section) {
+    const sectionTop =
+      section.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
+    window.scrollTo({
+      top: sectionTop,
+      behavior: "smooth",
+    });
+  }
+};
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const toggleMenu = () => setIsOpen(!isOpen);
   const menuItems = ["Services", "About Us", "Testimonials", "Contact"];
 
-  const scrollToSection = (sectionId: string) => {
-    const section = document.getElementById(sectionId);
-    const navbar = document.querySelector("header");
-    const navbarHeight = navbar!.offsetHeight;
-
-    if (section) {
-      const sectionTop =
-        section.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
-      window.scrollTo({
-        top: sectionTop,
-        behavior: "smooth",
-      });
-    }
-
+  const handleNavClick = (sectionId: any) => {
+    scrollToSection(sectionId);
     if (isOpen) {
       toggleMenu();
     }
@@ -50,13 +53,13 @@ const Navbar = () => {
     <header className="bg-white py-4 border-b border-gray-200 sticky top-0 z-50 shadow-lg">
       <nav className="container mx-auto px-4">
         <div className="flex justify-between items-center">
-          <img src="/logo.png" alt="Zoop Analysis Solutions" className="h-12" />
+          <img src="/logo.png" alt="Zoop Analysis Solutions" className="h-16" />
           <ul className="hidden md:flex space-x-6">
             {menuItems.map((item) => (
               <li key={item}>
                 <button
                   onClick={() =>
-                    scrollToSection(item.toLowerCase().replace(" ", "-"))
+                    handleNavClick(item.toLowerCase().replace(" ", "-"))
                   }
                   className="text-gray-600 hover:text-blue-600 transition-colors"
                 >
@@ -85,7 +88,7 @@ const Navbar = () => {
                 <li key={item}>
                   <button
                     onClick={() =>
-                      scrollToSection(item.toLowerCase().replace(" ", "-"))
+                      handleNavClick(item.toLowerCase().replace(" ", "-"))
                     }
                     className="text-gray-600 hover:text-blue-600 transition-colors block py-2 w-full text-left"
                   >
@@ -101,17 +104,7 @@ const Navbar = () => {
   );
 };
 
-const ColorChangeCard = ({
-  title,
-  description,
-  image,
-  index,
-}: {
-  title: string;
-  description: string;
-  image: string;
-  index: number;
-}) => {
+const ColorChangeCard = ({ title, description, image, index }: any) => {
   const [isHovered, setIsHovered] = useState(false);
   const isEven = index % 2 === 0;
 
@@ -165,6 +158,41 @@ const ColorChangeCard = ({
 const ZoopAnalysisHomepage = () => {
   const heroRef = useRef(null);
   const isHeroInView = useInView(heroRef);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  const handleInputChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      if (response.ok) {
+        alert("Message sent successfully!");
+        setFormData({ name: "", email: "", message: "" });
+      } else {
+        alert("Failed to send message. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred. Please try again later.");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800">
@@ -188,13 +216,13 @@ const ZoopAnalysisHomepage = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5 }}
                 >
-                  Elevate Your Research with{" "}
+                  Transform Your Research into{" "}
                   <RoughNotation
                     type="highlight"
                     animationDuration={1500}
                     color="#3B82F680"
                   >
-                    Expert Analysis
+                    Impactful Publications
                   </RoughNotation>
                 </motion.h1>
                 <motion.p
@@ -203,16 +231,18 @@ const ZoopAnalysisHomepage = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
                 >
-                  Zoop Analysis Solutions: Your trusted partner in research data
-                  analysis and publication for medical, dental, and nursing
-                  scholars.
+                  Elevate your medical, dental, or nursing research with Zoop
+                  Analysis Solutions. From data analysis to publication in
+                  top-tier journals, we&apos;re your pathway to research
+                  excellence.
                 </motion.p>
                 <motion.button
                   className="bg-blue-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition-colors"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  onClick={() => scrollToSection("contact")}
                 >
-                  Get Started
+                  Unlock Your Research Potential
                 </motion.button>
               </RoughNotationGroup>
             </div>
@@ -223,32 +253,32 @@ const ZoopAnalysisHomepage = () => {
         <section id="services" className="py-20 bg-white">
           <div className="container mx-auto px-4">
             <h2 className="text-4xl font-bold mb-12 text-center text-gray-800">
-              Our Comprehensive Services
+              Comprehensive Research Solutions
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0">
               {[
                 {
-                  title: "Statistical Analysis",
+                  title: "Expert Statistical Analysis",
                   description:
-                    "Advanced statistical techniques to derive meaningful insights from your data.",
+                    "Unlock profound insights with our advanced statistical techniques, tailored for medical research.",
                   image: "/cards/1.jpg",
                 },
                 {
-                  title: "Manuscript Preparation",
+                  title: "Publication-Ready Manuscripts",
                   description:
-                    "Expert assistance in preparing high-quality manuscripts for publication.",
+                    "Transform your findings into compelling, publication-worthy manuscripts with our expert assistance.",
                   image: "/cards/2.jpg",
                 },
                 {
-                  title: "Publication Support",
+                  title: "Guaranteed Publication Support",
                   description:
-                    "Guidance through the publication process in reputable indexed journals.",
+                    "Navigate the publication process with confidence. We guide you to reputable indexed journals that matter.",
                   image: "/cards/3.jpg",
                 },
                 {
-                  title: "Global Consultation",
+                  title: "Global Research Collaboration",
                   description:
-                    "Virtual consultations breaking geographical barriers for worldwide support.",
+                    "Break geographical barriers with our virtual consultations, connecting you to global research excellence.",
                   image: "/cards/4.jpg",
                 },
               ].map((service, index) => (
@@ -267,39 +297,39 @@ const ZoopAnalysisHomepage = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              Why Choose Zoop Analysis Solutions?
+              Why Zoop Analysis Solutions?
             </motion.h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto w-full">
               {[
                 {
                   icon: FiCheckCircle,
-                  title: "Expert Team",
+                  title: "Specialized Expertise",
                   description:
-                    "Our seasoned data analysts and statisticians specialize in medical, dental, and nursing research, providing unparalleled expertise.",
+                    "Our team of seasoned analysts and statisticians specialize in medical, dental, and nursing research, providing unparalleled insights for your field.",
                 },
                 {
                   icon: FiGlobe,
-                  title: "Comprehensive Coverage",
+                  title: "Comprehensive Research Support",
                   description:
-                    "We support MBBS, BDS, MD, MS, MDS, DM, MCh, and PhD research, covering the full spectrum of medical academia.",
+                    "From MBBS to PhD, we support all levels of medical academia, ensuring your research meets the highest standards of excellence.",
                 },
                 {
                   icon: FiAward,
-                  title: "Publication Excellence",
+                  title: "Publication in Prestigious Journals",
                   description:
-                    "We facilitate publication in SCOPUS, EMBASE, and PubMed indexed journals, adhering to the latest NMC guidelines.",
+                    "We facilitate publication in SCOPUS, EMBASE, and PubMed indexed journals, adhering to the latest NMC guidelines for maximum impact.",
                 },
                 {
                   icon: FiBarChart2,
-                  title: "Cutting-edge Analysis",
+                  title: "Cutting-Edge Analysis Techniques",
                   description:
-                    "Utilize advanced statistical methods and data visualization techniques to enhance your research impact.",
+                    "Leverage advanced statistical methods and state-of-the-art data visualization to enhance your research's credibility and impact.",
                 },
               ].map((feature, index) => (
                 <WobbleCard
                   key={index}
                   containerClassName="col-span-1 min-h-[300px]"
-                  className="flex items-start justify-center p-8 bg-white shadow-lg"
+                  className="flex items-start justify-center p-8 bg-white"
                 >
                   <div className="flex flex-col items-start text-left w-full">
                     <feature.icon className="text-4xl text-blue-600 mb-4" />
@@ -333,7 +363,7 @@ const ZoopAnalysisHomepage = () => {
         >
           <div className="container mx-auto px-4">
             <h2 className="text-4xl font-bold mb-12 text-center text-gray-800">
-              What Our Clients Say
+              Success Stories from Our Clients
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {[
@@ -341,19 +371,19 @@ const ZoopAnalysisHomepage = () => {
                   name: "Dr. Sarah Johnson",
                   role: "Cardiologist",
                   quote:
-                    "Zoop Analysis Solutions transformed my research data into publishable insights. Their expertise is unmatched!",
+                    "Zoop Analysis Solutions transformed my complex cardiovascular data into publishable insights. Their expertise catapulted my research to a top-tier journal!",
                 },
                 {
                   name: "Dr. Michael Chen",
                   role: "Dental Researcher",
                   quote:
-                    "The statistical analysis provided by Zoop was crucial for my publication in a top-tier journal. Highly recommended!",
+                    "The statistical analysis provided by Zoop was crucial for my publication in a leading dental journal. Their support throughout the process was invaluable.",
                 },
                 {
                   name: "Prof. Emily Brown",
                   role: "Nursing Science",
                   quote:
-                    "Working with Zoop Analysis Solutions made the daunting task of data analysis a breeze. Their support was invaluable.",
+                    "Zoop's guidance turned my nursing research into a groundbreaking publication. Their expertise in healthcare analytics is unmatched!",
                 },
               ].map((testimonial, index) => (
                 <motion.div
@@ -382,7 +412,7 @@ const ZoopAnalysisHomepage = () => {
         <section id="contact" className="bg-white py-20">
           <div className="container mx-auto px-4">
             <h2 className="text-4xl font-bold mb-12 text-center text-gray-800">
-              Get In Touch
+              Start Your Research Journey
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
               <div>
@@ -391,50 +421,63 @@ const ZoopAnalysisHomepage = () => {
                 </h3>
                 <p className="mb-4 flex items-center text-gray-600">
                   <FiMail className="text-blue-600 mr-2" />{" "}
-                  info@zoopanalysis.com
+                  zoopanalysis@gmail.com
                 </p>
                 <p className="mb-4 flex items-center text-gray-600">
-                  <FiPhone className="text-blue-600 mr-2" /> +1 (555) 123-4567
+                  <FiPhone className="text-blue-600 mr-2" /> +91 8778074704
                 </p>
                 <p className="mb-4 flex items-center text-gray-600">
-                  <FiMapPin className="text-blue-600 mr-2" /> 123 Main Street,
-                  Suite 101, New York, NY 10001
+                  <FiGlobe className="text-blue-600 mr-2" />{" "}
+                  www.zoopanalysis.com
                 </p>
                 <p className="mb-4 flex items-center text-gray-600">
-                  <FiClock className="text-blue-600 mr-2" /> Mon-Fri: 9am - 6pm
+                  <FiClock className="text-blue-600 mr-2" /> Available 24/7 for
+                  your research needs
                 </p>
               </div>
               <div>
                 <h3 className="text-2xl font-semibold mb-6 text-gray-800">
-                  Send Us a Message
+                  Get a Free Consultation
                 </h3>
-                <form>
+                <form onSubmit={handleSubmit}>
                   <div className="mb-4">
                     <label className="block text-gray-700 mb-2">Name</label>
                     <input
                       type="text"
-                      className="w-full border border-gray-300 px-4 py-2"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      className="w-full border border-gray-300 px-4 py-2 rounded"
+                      required
                     />
                   </div>
                   <div className="mb-4">
                     <label className="block text-gray-700 mb-2">Email</label>
                     <input
                       type="email"
-                      className="w-full border border-gray-300 px-4 py-2"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      className="w-full border border-gray-300 px-4 py-2 rounded"
+                      required
                     />
                   </div>
                   <div className="mb-4">
                     <label className="block text-gray-700 mb-2">Message</label>
                     <textarea
-                      className="w-full border border-gray-300 px-4 py-2"
+                      name="message"
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      className="w-full border border-gray-300 px-4 py-2 rounded"
                       rows={4}
+                      required
                     ></textarea>
                   </div>
                   <button
                     type="submit"
                     className="bg-blue-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition-colors"
                   >
-                    Send Message
+                    Get Expert Advice
                   </button>
                 </form>
               </div>
@@ -448,12 +491,13 @@ const ZoopAnalysisHomepage = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
               <h3 className="text-white text-lg font-semibold mb-4">
-                About Us
+                About Zoop Analysis
               </h3>
               <p className="text-gray-400">
-                Zoop Analysis Solutions provides expert research data analysis
-                and publication support for medical, dental, and nursing
-                scholars.
+                Zoop Analysis Solutions is your premier partner for research
+                excellence. We specialize in transforming complex medical,
+                dental, and nursing data into impactful publications in
+                prestigious journals.
               </p>
             </div>
             <div>
@@ -462,36 +506,36 @@ const ZoopAnalysisHomepage = () => {
               </h3>
               <ul className="text-gray-400">
                 <li className="mb-2">
-                  <a
-                    href="#services"
+                  <button
+                    onClick={() => scrollToSection("services")}
                     className="hover:text-blue-400 transition-colors"
                   >
-                    Services
-                  </a>
+                    Our Services
+                  </button>
                 </li>
                 <li className="mb-2">
-                  <a
-                    href="#about-us"
+                  <button
+                    onClick={() => scrollToSection("about-us")}
                     className="hover:text-blue-400 transition-colors"
                   >
-                    About Us
-                  </a>
+                    Why Choose Us
+                  </button>
                 </li>
                 <li className="mb-2">
-                  <a
-                    href="#testimonials"
+                  <button
+                    onClick={() => scrollToSection("testimonials")}
                     className="hover:text-blue-400 transition-colors"
                   >
-                    Testimonials
-                  </a>
+                    Success Stories
+                  </button>
                 </li>
                 <li className="mb-2">
-                  <a
-                    href="#contact"
+                  <button
+                    onClick={() => scrollToSection("contact")}
                     className="hover:text-blue-400 transition-colors"
                   >
-                    Contact
-                  </a>
+                    Start Your Journey
+                  </button>
                 </li>
               </ul>
             </div>
@@ -500,19 +544,18 @@ const ZoopAnalysisHomepage = () => {
                 Contact Us
               </h3>
               <p className="text-gray-400 mb-2">
-                <FiMail className="inline mr-2" /> info@zoopanalysis.com
+                <FiMail className="inline mr-2" /> zoopanalysis@gmail.com
               </p>
               <p className="text-gray-400 mb-2">
-                <FiPhone className="inline mr-2" /> +1 (555) 123-4567
+                <FiPhone className="inline mr-2" /> +91 8778074704
               </p>
               <p className="text-gray-400">
-                <FiMapPin className="inline mr-2" /> 123 Main Street, Suite 101,
-                New York, NY 10001
+                <FiGlobe className="inline mr-2" /> www.zoopanalysis.com
               </p>
             </div>
             <div>
               <h3 className="text-white text-lg font-semibold mb-4">
-                Follow Us
+                Connect With Us
               </h3>
               <div className="flex space-x-4">
                 <a
@@ -543,8 +586,8 @@ const ZoopAnalysisHomepage = () => {
             </div>
           </div>
           <div className="mt-8 pt-8 border-t border-gray-700 text-center text-gray-400">
-            &copy; {new Date().getFullYear()} Zoop Analysis Solutions. All
-            Rights Reserved.
+            &copy; {new Date().getFullYear()} Zoop Analysis Solutions.
+            Empowering Research Excellence.
           </div>
         </div>
       </footer>

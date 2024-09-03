@@ -38,14 +38,15 @@ export const WobbleCard = ({
         transition: "transform 0.1s ease-out",
       }}
       className={cn(
-        "mx-auto w-full bg-white relative overflow-hidden",
+        "mx-auto w-full bg-white relative rounded-lg overflow-hidden",
         containerClassName
       )}
     >
       <div
-        className="relative h-full sm:mx-0 overflow-hidden"
+        className="relative h-full sm:mx-0 sm:rounded-lg overflow-hidden"
         style={{
-          boxShadow: "0 10px 30px rgba(0, 0, 0, 0.1)",
+          boxShadow:
+            "0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08)",
         }}
       >
         <motion.div

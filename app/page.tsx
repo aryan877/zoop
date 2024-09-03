@@ -230,7 +230,7 @@ const ZoopAnalysisHomepage = () => {
                   className="bg-white p-6 rounded-lg shadow-lg text-center"
                 >
                   <p className="text-gray-600 italic mb-4">
-                    "{testimonial.quote}"
+                    &quot;{testimonial.quote}&quot;
                   </p>
                   <p className="font-semibold text-gray-800">
                     {testimonial.name}
